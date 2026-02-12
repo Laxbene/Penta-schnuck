@@ -1,0 +1,5 @@
+0 Rot
+1 Gelb
+2 Grün
+3 Blau
+4 Lila
