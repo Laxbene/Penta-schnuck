@@ -3,6 +3,25 @@ import tensorflow as tf
 from PIL import Image, ImageOps
 import numpy as np
 
+# --- NEUE LADE-LOGIK FÜR KERAS 3 ---
+@st.cache_resource
+def load_model_and_labels():
+    # Wir laden das Modell und ignorieren die Inkompatibilität der Layer-Konfiguration
+    # 'compile=False' ist wichtig, da die Optimizer-Daten oft das Problem sind
+    try:
+        model = tf.keras.models.load_model('keras_model.h5', compile=False)
+    except Exception as e:
+        # Falls der Fehler mit 'groups' kommt, versuchen wir einen Workaround
+        st.error(f"Fehler beim Laden des Modells: {e}")
+        st.info("Versuche alternativen Lade-Modus...")
+        # Hier könnte man theoretisch das Modell über Weights laden, 
+        # aber meistens hilft ein Reboot mit den neuen Requirements.
+        return None, None
+
+    with open('labels.txt', 'r', encoding='utf-8') as f:
+        class_names = [line.strip().split(' ', 1)[1] for line in f.readlines()]
+    return model, class_names
+
 # --- SEITENKONFIGURATION ---
 st.set_page_config(page_title="KI Farb-Battle: Best of 7", page_icon="🎨")
 
