@@ -58,7 +58,8 @@ def draw_interactive_pentagon(player_choice=None, comp_choice=None):
         
         # Hervorhebung bei Wahl
         line_width = 0
-        if name == player_score_label := player_choice:
+        # RICHTIG:
+        if name == player_choice:
             line_width = 5
             size = 40
         if name == comp_choice:
